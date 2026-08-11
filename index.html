@@ -65,13 +65,36 @@
   .result-en { text-align: center; color: var(--text-soft); font-size: 13px; margin-bottom: 18px; }
   .result-desc { line-height: 1.8; margin-bottom: 20px; }
   .note { font-size: 12px; color: var(--text-soft); margin-top: 18px; line-height: 1.7; }
+
+  /* Lock */
+  .lock-wrap { text-align: center; }
+  .lock-input {
+    width: 100%; padding: 12px 14px; border: 1px solid var(--border); border-radius: 10px;
+    font-size: 15px; margin: 16px 0 10px; box-sizing: border-box;
+  }
+  .lock-input:focus { border-color: var(--accent); outline: none; }
+  .lock-error { color: #dc2626; font-size: 13px; min-height: 18px; margin-bottom: 6px; }
 </style>
 </head>
 <body>
 <div class="wrap">
 
+  <!-- ============ Lock ============ -->
+  <div id="screen-lock" class="screen active">
+    <div class="hero lock-wrap">
+      <div class="badge">🔒</div>
+      <h1>部下のトリセツAI</h1>
+      <p class="lead">このページは関係者限定です。共有されたパスワードを入力してください。</p>
+    </div>
+    <div class="card">
+      <input type="password" id="lockInput" class="lock-input" placeholder="パスワード" onkeydown="if(event.key==='Enter') checkPassword();">
+      <div class="lock-error" id="lockError"></div>
+      <button class="cta" onclick="checkPassword()">開く</button>
+    </div>
+  </div>
+
   <!-- ============ Landing ============ -->
-  <div id="screen-landing" class="screen active">
+  <div id="screen-landing" class="screen">
     <div class="hero">
       <div class="badge">📘</div>
       <h1>部下のトリセツAI</h1>
@@ -125,6 +148,28 @@
 </div>
 
 <script>
+/* ==== 簡易パスワード（本格的なセキュリティではありません） ==== */
+const SITE_PASSWORD = "tcs_AIcoach2026";
+const AUTH_KEY = "bukaTorisetsuAuthed";
+
+function checkPassword() {
+  const input = document.getElementById('lockInput');
+  const error = document.getElementById('lockError');
+  if (input.value === SITE_PASSWORD) {
+    localStorage.setItem(AUTH_KEY, '1');
+    error.textContent = '';
+    goTo('landing');
+  } else {
+    error.textContent = 'パスワードが違います';
+    input.value = '';
+    input.focus();
+  }
+}
+
+if (localStorage.getItem(AUTH_KEY) === '1') {
+  document.addEventListener('DOMContentLoaded', () => goTo('landing'));
+}
+
 /* ==== ここにGPT作成後のURLを入れてください ==== */
 const GPT_LINKS = {
   fire:  "https://chatgpt.com/g/g-6a7aaa291bf48191b91113a2b3c738a2-jie-guo-zhong-shi-san",
