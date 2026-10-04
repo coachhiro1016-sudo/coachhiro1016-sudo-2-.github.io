@@ -66,6 +66,13 @@
   .result-desc { line-height: 1.8; margin-bottom: 20px; }
   .note { font-size: 12px; color: var(--text-soft); margin-top: 18px; line-height: 1.7; }
 
+  .boxed-note {
+    border: 1px solid var(--border); border-radius: 10px; background: var(--bg);
+    font-size: 12.5px; color: var(--text-soft); line-height: 1.8;
+    padding: 12px 16px; margin: 0 auto 24px; max-width: 480px; text-align: left;
+  }
+  .gpt-link { color: var(--accent); font-weight: 600; text-decoration: underline; }
+
   /* Lock */
   .lock-wrap { text-align: center; }
   .lock-input {
@@ -100,15 +107,19 @@
       <h1>部下のトリセツAI</h1>
       <p class="lead">
         あなたが部下に伝えようとしている言葉は、相手にどう見えているでしょうか。<br>
-        部下のタイプを簡単に診断し、そのタイプの視点から率直なフィードバックをくれるAIコーチにつなぎます。
+        部下のコミュニケーションタイプを簡単に診断し、そのタイプの視点から率直なフィードバックをくれるAIコーチにつなぎます。
+      </p>
+      <p class="boxed-note">
+        コミュニケーションタイプは、立場や年齢、置かれている状況によっても変化します。<br>
+        過去の回答や、ご自身のこれまでの印象はいったんわきに置き、今の部下の方の状態に沿って回答していただければと思います。
       </p>
     </div>
     <div class="card">
       <div class="type-grid">
-        <div class="type-chip">🎯 結果重視さん<br>自分で決めたい・結論を早く知りたい</div>
-        <div class="type-chip">🎨 自由奔放さん<br>発想が自由・褒められて伸びる</div>
-        <div class="type-chip">📐 慎重堅実さん<br>根拠を確かめてから動く・計画重視</div>
-        <div class="type-chip">🤝 協調重視さん<br>周囲との調和を大切にする・気配り上手</div>
+        <div class="type-chip">🎯 <a class="gpt-link" data-gpt="fire" target="_blank" rel="noopener">結果重視さん</a><br>自分で決めたい・結論を早く知りたい</div>
+        <div class="type-chip">🎨 <a class="gpt-link" data-gpt="wind" target="_blank" rel="noopener">自由奔放さん</a><br>発想が自由・褒められて伸びる</div>
+        <div class="type-chip">📐 <a class="gpt-link" data-gpt="land" target="_blank" rel="noopener">慎重堅実さん</a><br>根拠を確かめてから動く・計画重視</div>
+        <div class="type-chip">🤝 <a class="gpt-link" data-gpt="water" target="_blank" rel="noopener">協調重視さん</a><br>周囲との調和を大切にする・気配り上手</div>
       </div>
       <button class="cta" onclick="goTo('quiz')">部下のタイプを診断する（8問・1分）</button>
     </div>
@@ -137,7 +148,7 @@
       <div class="result-type" id="resultType">結果重視さん</div>
       <div class="result-desc" id="resultDesc"></div>
       <a class="cta" id="resultLink" href="#" target="_blank" rel="noopener">このタイプのAIコーチと話してみる</a>
-      <button class="cta secondary" style="margin-top:10px;" onclick="goTo('quiz'); resetQuiz();">もう一度診断する</button>
+      <button class="cta secondary" style="margin-top:10px;" onclick="resetQuiz(); goTo('quiz');">もう一度診断する</button>
       <p class="note">
         ※ この診断は簡易的な参考情報です。タイプに優劣はなく、必ずしも一つのタイプに断定されるものではありません。<br>
         ※ ハラスメントに該当するかどうかの判断や法律相談は、AIコーチでは扱えません。専門家にご相談ください。
@@ -177,6 +188,8 @@ const GPT_LINKS = {
   land:  "https://chatgpt.com/g/g-6a7aace229088191b1d8df48bcb1ad29-shen-zhong-jian-shi-san",
   water: "https://chatgpt.com/g/g-6a7aae5aa20481918651c550fec4d4cd-xie-diao-zhong-shi-san"
 };
+
+document.querySelectorAll('.gpt-link').forEach(a => { a.href = GPT_LINKS[a.dataset.gpt]; });
 
 const TYPE_INFO = {
   fire:  { badge: "🎯", name: "結果重視さん",
